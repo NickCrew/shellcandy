@@ -1,0 +1,23 @@
+# Test outputs
+benchmark_results.txt
+*.log
+
+# Backups
+*.backup
+*_OLD.md
+*_old.*
+
+# OS files
+.DS_Store
+Thumbs.db
+
+# Editor files
+*.swp
+*.swo
+*~
+.vscode/
+.idea/
+
+# Build artifacts
+*.tar.gz
+dist/
