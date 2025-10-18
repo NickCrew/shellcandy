@@ -2,10 +2,29 @@
 # showcase.sh - Complete ShellCandy Framework Demonstration
 # Shows all modules working together in realistic scenarios
 
-source "$(dirname "$0")/shellcandy.sh"
+# Load ShellCandy from parent directory
+SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
+source "${SCRIPT_DIR}/../shellcandy.sh"
 
 # Configuration
 DEMO_SPEED=1  # Adjust for faster/slower demos (1=normal, 0.5=fast, 2=slow)
+AUTO_PLAY=false  # Auto-play mode (no waiting for Enter)
+
+# Parse arguments
+for arg in "$@"; do
+    case "$arg" in
+        --auto|--non-interactive|-a)
+            AUTO_PLAY=true
+            DEMO_SPEED=0.1  # Much faster in auto-play mode
+            ;;
+        --fast)
+            DEMO_SPEED=0.5
+            ;;
+        --slow)
+            DEMO_SPEED=2
+            ;;
+    esac
+done
 
 # Helper function for demo pacing
 demo_pause() {
@@ -14,9 +33,14 @@ demo_pause() {
 }
 
 demo_wait_key() {
-    echo ""
-    echo -e "${SC_DIM}Press Enter to continue...${SC_RESET}"
-    read -r
+    if [[ "$AUTO_PLAY" == "true" ]]; then
+        echo ""
+        demo_pause 0.5  # Just a brief pause in auto mode
+    else
+        echo ""
+        echo -e "${SC_DIM}Press Enter to continue...${SC_RESET}"
+        read -r
+    fi
 }
 
 # ============================================================================

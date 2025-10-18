@@ -1,7 +1,9 @@
 #!/bin/bash
 # examples.sh - Practical examples for the box drawing library
 
-source "$(dirname "$0")/boxes.sh"
+# Load ShellCandy from parent directory
+SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
+source "${SCRIPT_DIR}/../shellcandy.sh"
 
 # Clear screen for clean output
 clear

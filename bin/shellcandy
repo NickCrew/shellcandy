@@ -1,0 +1,236 @@
+#!/usr/bin/env bash
+# shellcandy - ShellCandy Framework CLI
+# Version: 2.0.0
+#
+# Unified command-line interface for ShellCandy operations
+
+set -e
+
+# Get ShellCandy installation directory
+SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
+SHELLCANDY_HOME="${SHELLCANDY_HOME:-$(dirname "$SCRIPT_DIR")}"
+
+# Colors for output
+RED='\033[0;31m'
+GREEN='\033[0;32m'
+YELLOW='\033[0;33m'
+BLUE='\033[0;34m'
+CYAN='\033[0;36m'
+BOLD='\033[1m'
+NC='\033[0m'
+
+# ============================================================================
+# Helper Functions
+# ============================================================================
+
+error() {
+    echo -e "${RED}✗${NC} $*" >&2
+    exit 1
+}
+
+info() {
+    echo -e "${BLUE}ℹ${NC} $*"
+}
+
+success() {
+    echo -e "${GREEN}✓${NC} $*"
+}
+
+# ============================================================================
+# Command Functions
+# ============================================================================
+
+cmd_help() {
+    cat << 'EOF'
+╔════════════════════════════════════════════════════════════════════════════╗
+║                         ShellCandy CLI v2.0.0                              ║
+║                  Beautiful Terminal UI Framework for Bash                  ║
+╚════════════════════════════════════════════════════════════════════════════╝
+
+USAGE:
+  shellcandy <command> [options]
+
+COMMANDS:
+  validate              Run validation test suite (68 tests)
+  benchmark             Run performance benchmarks (13 benchmarks)
+  demo                  Run interactive showcase demo
+  dashboard             Run ultimate dashboard example
+  examples              Run all examples
+  help                  Show this help message
+  version               Show version information
+  info                  Show installation information
+
+EXAMPLES:
+  shellcandy validate   # Run all validation tests
+  shellcandy benchmark  # Run performance benchmarks
+  shellcandy demo       # See ShellCandy in action
+
+DOCUMENTATION:
+  README:       $SHELLCANDY_HOME/README.md
+  API Docs:     $SHELLCANDY_HOME/lib/docs/README.md
+  Testing:      $SHELLCANDY_HOME/lib/docs/TESTING.md
+  Performance:  $SHELLCANDY_HOME/lib/docs/OPTIMIZATION.md
+
+QUICK START:
+  # In your script
+  source $SHELLCANDY_HOME/lib/shellcandy.sh
+
+  box_success "Hello!" "ShellCandy makes terminals beautiful"
+  sc_progress_bar 75 100 "Processing"
+
+For more information: https://github.com/YOUR_ORG/shellcandy
+EOF
+}
+
+cmd_version() {
+    echo "ShellCandy v2.0.0"
+    echo "Pure Bash Terminal UI Framework"
+    echo ""
+    echo "Installation: $SHELLCANDY_HOME"
+    echo "Bash version: $BASH_VERSION"
+}
+
+cmd_info() {
+    cat << EOF
+╔════════════════════════════════════════════════════════════════════════════╗
+║                    ShellCandy Installation Info                            ║
+╚════════════════════════════════════════════════════════════════════════════╝
+
+Version:        2.0.0
+Installation:   $SHELLCANDY_HOME
+Bash version:   $BASH_VERSION
+
+MODULES:
+  ✓ colors      Extended color system (256-color, RGB, themes)
+  ✓ logging     Multi-level logging with file output
+  ✓ progress    Spinners and progress bars with ETA
+  ✓ icons       50+ status symbols and emoji
+  ✓ boxes       Perfect alignment with ANSI/emoji support
+  ✓ tables      Auto-sizing tables with CSV support
+  ✓ prompts     Interactive forms with validation
+  ✓ menus       Keyboard navigation, nested menus
+  ✓ charts      Sparklines, bar charts, gauges, histograms
+
+STATISTICS:
+  Modules:      9
+  Functions:    60+
+  Code lines:   ~4,800
+  Tests:        68 validation tests
+  Benchmarks:   13 performance benchmarks
+  Dependencies: 0 (pure Bash)
+
+FILES:
+  Main:         $SHELLCANDY_HOME/lib/shellcandy.sh
+  Modules:      $SHELLCANDY_HOME/lib/modules/
+  Tools:        $SHELLCANDY_HOME/lib/tools/
+  Examples:     $SHELLCANDY_HOME/lib/examples/
+  Docs:         $SHELLCANDY_HOME/lib/docs/
+
+USAGE IN SCRIPTS:
+  source $SHELLCANDY_HOME/lib/shellcandy.sh
+
+Run 'shellcandy help' for command usage.
+EOF
+}
+
+cmd_validate() {
+    local validate_script="$SHELLCANDY_HOME/lib/tools/validate.sh"
+
+    if [ ! -f "$validate_script" ]; then
+        error "Validation script not found: $validate_script"
+    fi
+
+    info "Running ShellCandy validation suite..."
+    echo ""
+
+    "$validate_script" "$@"
+}
+
+cmd_benchmark() {
+    local benchmark_script="$SHELLCANDY_HOME/lib/tools/benchmark.sh"
+
+    if [ ! -f "$benchmark_script" ]; then
+        error "Benchmark script not found: $benchmark_script"
+    fi
+
+    info "Running ShellCandy performance benchmarks..."
+    echo ""
+
+    "$benchmark_script" "$@"
+}
+
+cmd_demo() {
+    local demo_script="$SHELLCANDY_HOME/lib/examples/showcase.sh"
+
+    if [ ! -f "$demo_script" ]; then
+        error "Demo script not found: $demo_script"
+    fi
+
+    # Run in auto-play mode by default when called via CLI
+    "$demo_script" --auto "$@"
+}
+
+cmd_dashboard() {
+    local dashboard_script="$SHELLCANDY_HOME/lib/examples/ultimate-dashboard.sh"
+
+    if [ ! -f "$dashboard_script" ]; then
+        error "Dashboard script not found: $dashboard_script"
+    fi
+
+    "$dashboard_script" "$@"
+}
+
+cmd_examples() {
+    local examples_script="$SHELLCANDY_HOME/lib/examples/examples.sh"
+
+    if [ ! -f "$examples_script" ]; then
+        error "Examples script not found: $examples_script"
+    fi
+
+    "$examples_script" "$@"
+}
+
+# ============================================================================
+# Main Entry Point
+# ============================================================================
+
+main() {
+    # Check if ShellCandy installation exists
+    if [ ! -d "$SHELLCANDY_HOME/lib" ]; then
+        error "ShellCandy installation not found at: $SHELLCANDY_HOME"
+    fi
+
+    # Get command
+    local command="${1:-help}"
+    shift 2>/dev/null || true
+
+    # Execute command
+    case "$command" in
+        validate|test)
+            cmd_validate "$@"
+            ;;
+        benchmark|bench|perf)
+            cmd_benchmark "$@"
+            ;;
+        demo|showcase)
+            cmd_demo "$@"
+            ;;
+        dashboard|dash)
+            cmd_dashboard "$@"
+            ;;
+        examples|ex)
+            cmd_examples "$@"
+            ;;
+        version|--version|-v)
+            cmd_version
+            ;;
+        info|about)
+            cmd_info
+            ;;
+        help|--help|-h|*)
+            cmd_help
+            ;;
+    esac
+}
+
+main "$@"

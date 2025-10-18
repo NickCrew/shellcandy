@@ -32,13 +32,13 @@ fi
 # Configuration
 # ============================================================================
 
-# Spinner styles
-export SC_SPINNER_DOTS=("⠋" "⠙" "⠹" "⠸" "⠼" "⠴" "⠦" "⠧" "⠇" "⠏")
-export SC_SPINNER_LINE=("⠋" "⠙" "⠚" "⠞" "⠖" "⠦" "⠴" "⠲" "⠳" "⠓")
-export SC_SPINNER_ARROW=("←" "↖" "↑" "↗" "→" "↘" "↓" "↙")
-export SC_SPINNER_CIRCLE=("◴" "◷" "◶" "◵")
-export SC_SPINNER_BOUNCE=("⠁" "⠂" "⠄" "⡀" "⢀" "⠠" "⠐" "⠈")
-export SC_SPINNER_CLASSIC=("|" "/" "-" "\\")
+# Spinner styles (arrays cannot be exported, defined locally in functions)
+SC_SPINNER_DOTS=("⠋" "⠙" "⠹" "⠸" "⠼" "⠴" "⠦" "⠧" "⠇" "⠏")
+SC_SPINNER_LINE=("⠋" "⠙" "⠚" "⠞" "⠖" "⠦" "⠴" "⠲" "⠳" "⠓")
+SC_SPINNER_ARROW=("←" "↖" "↑" "↗" "→" "↘" "↓" "↙")
+SC_SPINNER_CIRCLE=("◴" "◷" "◶" "◵")
+SC_SPINNER_BOUNCE=("⠁" "⠂" "⠄" "⡀" "⢀" "⠠" "⠐" "⠈")
+SC_SPINNER_CLASSIC=("|" "/" "-" "\\")
 
 # Progress bar styles
 export SC_PROGRESS_BAR_CHAR="█"
@@ -56,28 +56,29 @@ sc_spinner_start() {
     local message=${1:-"Loading..."}
     local style=${2:-"dots"}
 
-    # Select spinner style
-    local spinner_frames
-    case "$style" in
-        dots)    spinner_frames=("${SC_SPINNER_DOTS[@]}") ;;
-        line)    spinner_frames=("${SC_SPINNER_LINE[@]}") ;;
-        arrow)   spinner_frames=("${SC_SPINNER_ARROW[@]}") ;;
-        circle)  spinner_frames=("${SC_SPINNER_CIRCLE[@]}") ;;
-        bounce)  spinner_frames=("${SC_SPINNER_BOUNCE[@]}") ;;
-        classic) spinner_frames=("${SC_SPINNER_CLASSIC[@]}") ;;
-        *) spinner_frames=("${SC_SPINNER_DOTS[@]}") ;;
-    esac
-
     # Hide cursor
     tput civis 2>/dev/null
 
     # Start spinner in background
+    # Output to stderr to avoid blocking command substitution
     (
+        # Define spinner frames directly in subshell (arrays can't be exported)
+        local spinner_frames
+        case "$style" in
+            dots)    spinner_frames=("⠋" "⠙" "⠹" "⠸" "⠼" "⠴" "⠦" "⠧" "⠇" "⠏") ;;
+            line)    spinner_frames=("⠋" "⠙" "⠚" "⠞" "⠖" "⠦" "⠴" "⠲" "⠳" "⠓") ;;
+            arrow)   spinner_frames=("←" "↖" "↑" "↗" "→" "↘" "↓" "↙") ;;
+            circle)  spinner_frames=("◴" "◷" "◶" "◵") ;;
+            bounce)  spinner_frames=("⠁" "⠂" "⠄" "⡀" "⢀" "⠠" "⠐" "⠈") ;;
+            classic) spinner_frames=("|" "/" "-" "\\") ;;
+            *)       spinner_frames=("⠋" "⠙" "⠹" "⠸" "⠼" "⠴" "⠦" "⠧" "⠇" "⠏") ;;
+        esac
+
         local i=0
         local frame_count=${#spinner_frames[@]}
         while true; do
             local frame="${spinner_frames[$i]}"
-            printf "\r${SC_CYAN}${frame}${SC_RESET} ${message}"
+            printf "\r${SC_CYAN}${frame}${SC_RESET} ${message}" >&2
             i=$(( (i + 1) % frame_count ))
             sleep 0.1
         done

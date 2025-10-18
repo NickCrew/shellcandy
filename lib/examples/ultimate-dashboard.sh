@@ -19,12 +19,10 @@
 #   ./ultimate-dashboard.sh --config   # Configuration wizard
 
 SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
-LIB_DIR="$(cd "${SCRIPT_DIR}/../lib" && pwd)"
+LIB_DIR="$(cd "${SCRIPT_DIR}/.." && pwd)"
 
-# Load ShellCandy
+# Load ShellCandy (automatically loads all modules including menus and charts)
 source "${LIB_DIR}/shellcandy.sh"
-source "${LIB_DIR}/menus.sh"
-source "${LIB_DIR}/charts.sh"
 
 # ============================================================================
 # Configuration
