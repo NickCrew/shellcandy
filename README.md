@@ -23,6 +23,12 @@
 
 ---
 
+<p align="center">
+  <img src="docs/assets/screenshots/status-dashboard.png" alt="ShellCandy Status Dashboard" width="600">
+</p>
+
+---
+
 ## 🎯 What is ShellCandy?
 
 ShellCandy transforms ordinary shell scripts into **beautiful, interactive terminal applications**. With **9 powerful modules** and **60+ functions**, you can create professional UIs with:
@@ -42,7 +48,7 @@ ShellCandy transforms ordinary shell scripts into **beautiful, interactive termi
 ### Install
 
 ```bash
-curl -fsSL https://raw.githubusercontent.com/YOUR_USERNAME/shellcandy/main/install.sh | bash
+curl -fsSL https://raw.githubusercontent.com/NickCrew/shellcandy/main/install.sh | bash
 ```
 
 ### Your First Script
@@ -82,6 +88,12 @@ sc_progress_bar 75 100 "Processing"
 | **menus** | Keyboard navigation, nested menus |
 | **charts** | Sparklines, bar charts, gauges, histograms |
 
+<p align="center">
+  <img src="docs/assets/screenshots/box-styles.png" alt="Box Styles" width="350">
+  &nbsp;&nbsp;
+  <img src="docs/assets/screenshots/error-message.png" alt="Error Reporting" width="350">
+</p>
+
 ---
 
 ## 📦 Installation
@@ -89,13 +101,13 @@ sc_progress_bar 75 100 "Processing"
 ### One-Line Install (Recommended)
 
 ```bash
-curl -fsSL https://raw.githubusercontent.com/YOUR_USERNAME/shellcandy/main/install.sh | bash
+curl -fsSL https://raw.githubusercontent.com/NickCrew/shellcandy/main/install.sh | bash
 ```
 
 ### Manual Install
 
 ```bash
-git clone https://github.com/YOUR_USERNAME/shellcandy.git ~/.shellcandy
+git clone https://github.com/NickCrew/shellcandy.git ~/.shellcandy
 echo 'export SHELLCANDY_HOME="$HOME/.shellcandy"' >> ~/.bashrc
 echo 'source $SHELLCANDY_HOME/lib/shellcandy.sh' >> ~/.bashrc
 source ~/.bashrc
@@ -119,6 +131,10 @@ sc_menu_add "Exit" "exit" "true" "q"
 sc_menu_show
 ```
 
+<p align="center">
+  <img src="docs/assets/screenshots/interactive-menu.png" alt="Interactive Menu" width="500">
+</p>
+
 ### Data Visualization
 
 ```bash
@@ -137,6 +153,12 @@ sc_table_row "Web" "✓ OK" "23%"
 sc_table_row "DB" "✓ OK" "45%"
 sc_table_render
 ```
+
+<p align="center">
+  <img src="docs/assets/screenshots/deployment-report.png" alt="Deployment Report" width="500">
+  &nbsp;&nbsp;
+  <img src="docs/assets/screenshots/progress-indicator.png" alt="Progress Indicator" width="350">
+</p>
 
 ---
 
@@ -196,14 +218,14 @@ Contributions welcome! Please see [CONTRIBUTING.md](CONTRIBUTING.md) for guideli
 
 MIT License - See [LICENSE](LICENSE) for details
 
-Copyright (c) 2025 ShellCandy Project
+Copyright (c) 2025 Nicholas Crew Ferguson
 
 ---
 
 ## 🔗 Links
 
-- **Issues**: https://github.com/YOUR_USERNAME/shellcandy/issues
-- **Discussions**: https://github.com/YOUR_USERNAME/shellcandy/discussions
+- **Issues**: https://github.com/NickCrew/shellcandy/issues
+- **Discussions**: https://github.com/NickCrew/shellcandy/discussions
 
 ---
 
